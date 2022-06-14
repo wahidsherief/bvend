@@ -19,5 +19,5 @@ require('./components/SearchTransaction');
 require('./components/VendorDashboard');
 require('./components/AdminDashboard');
 require('./components/OpenLocker');
-// require('./components/payment/Bkash');
+require('./pages/Index');
 // require('./components/AssignProductCategory');

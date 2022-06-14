@@ -11,7 +11,8 @@
             </div>
             <div class="card-body p-0 pb-3">
                 <div class="col-md-6 mt-4">
-                    <form action="{{route('vendor_account_store')}}" method="POST" enctype="multipart/form-data">
+                    <form action="{{route('vendor_account_machine_create')}}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label for="">Vendor Name</label>

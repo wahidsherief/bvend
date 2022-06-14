@@ -49,23 +49,18 @@ class Vendor extends Authenticatable
         return $this->belongsTo('App\VendorCategory');
     }
 
-    public function mltransaction()
+    public function transaction()
     {
-        return $this->hasMany('App\MLTransaction', 'vendor_id', 'id');
+        return $this->hasMany('App\Transaction', 'vendor_id', 'id');
     }
 
-    public function mstransaction()
-    {
-        return $this->hasMany('App\MSTransaction', 'vendor_id', 'id');
-    }
 
     public function totalSalesAmount()
     {
         $vendor_id = Auth::id();
-        $ml_machine_total_amount = MLTransaction::where('vendor_id', '=', $vendor_id)->sum('total_amount');
-        $ms_machine_total_amount = MSTransaction::where('vendor_id', '=', $vendor_id)->sum('total_amount');
+        $machine_total_amount = Transaction::where('vendor_id', '=', $vendor_id)->sum('total_amount');
 
-        return $ml_machine_total_amount + $ms_machine_total_amount;
+        return $machine_total_amount;
     }
 
     public function salesReport($type, $model, $date)
@@ -76,7 +71,7 @@ class Vendor extends Authenticatable
         $machines = DB::table($machine_table)->where('vendor_id', '=', $vendor_id)->get();
         $i = 0;
         foreach ($machines as $machine) {
-            $ml_transactions = DB::table('ml_transactions')
+            $transactions = DB::table('transactions')
                                 ->where([
                                     ['machine_id', '=', $machine->id],
                                     ['machine_model', '=', $model],
@@ -85,12 +80,12 @@ class Vendor extends Authenticatable
             $total_sales_amount = 0;
             $total_sales_product = 0;
             $sold_products = [];
-            if ($ml_transactions->count() > 0) {
-                foreach ($ml_transactions as $ml_transaction) {
+            if ($transactions->count() > 0) {
+                foreach ($transactions as $transaction) {
                     $transaction_lockers = DB::table('transaction_lockers')
-                                    ->join('ml_transactions', 'transaction_lockers.transaction_id', '=', 'ml_transactions.id')
-                                    ->where('transaction_lockers.transaction_id', '=', $ml_transaction->id)
-                                    ->where('ml_transactions.created_at', '>=', $date)
+                                    ->join('transactions', 'transaction_lockers.transaction_id', '=', 'transactions.id')
+                                    ->where('transaction_lockers.transaction_id', '=', $transaction->id)
+                                    ->where('transactions.created_at', '>=', $date)
                                     ->get();
                     $total_sales_product += $transaction_lockers->count();
                     if ($transaction_lockers->count() > 0) {
@@ -127,8 +122,8 @@ class Vendor extends Authenticatable
         $vendor_id = Auth::id();
         $products = DB::table('refills')
                         ->join('products', 'refills.product_id', '=', 'products.id')
-                        ->join('ml_8_machines', 'ml_8_machines.id', '=', 'refills.machine_id')
-                        ->where('ml_8_machines.vendor_id', '=', $vendor_id)
+                        ->join('machines', 'machines.id', '=', 'refills.machine_id')
+                        ->where('machines.vendor_id', '=', $vendor_id)
                         ->get();
     }
 }

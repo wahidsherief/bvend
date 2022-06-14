@@ -16,9 +16,9 @@ class CreateRefillsTable extends Migration
         Schema::create('refills', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('machine_id');
-            $table->enum('machine_type',['ML', 'MS']);
-            $table->enum('machine_model',['8', '16', '32', '64', '96', '128', '256']);
-            $table->integer('locker_id');
+            $table->enum('machine_type', ['store', 'box']);
+            $table->integer('channel_id');
+            $table->integer('lock_id');
             $table->integer('product_id');
             $table->integer('quantity');
             $table->integer('buy_unit_price');

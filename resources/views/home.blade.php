@@ -68,6 +68,20 @@
             outline: none !important;
             box-shadow: none;
         }
+
+        .frame iframe {
+
+            width: 48%;
+
+        }
+
+        @media only screen and (max-width: 600px) {
+            .frame iframe {
+                display: block;
+                width: 70%;
+                margin-top: 15px;
+            }
+        }
     </style>
 </head>
 
@@ -125,6 +139,23 @@
             </div>
         </div>
     </header>
+    <!-- Video Section -->
+
+    <section class="page-section">
+        <div class="container">
+            <center class='mb-4'>
+                <a href="https://play.google.com/store/apps/details?id=com.bvend"> <img
+                        src="{{asset('img/play_store.png')}}" alt="play store" width=300 height=120 /> </a>
+            </center>
+            <div class="frame" align="center">
+                <iframe height="400" class="embed-responsive-item" src="https://www.youtube.com/embed/UejostH6xwg"
+                    allowfullscreen></iframe>
+                <iframe height="400" class="embed-responsive-item" src="https://www.youtube.com/embed/OD6HTeafzM4"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+    <!-- Video Section -->
     <!-- About Section -->
     <section class="page-section bg-primary about" id="about">
         <div class="container">
@@ -145,6 +176,8 @@
             </div>
         </div>
     </section>
+
+
     <!-- Services Section -->
     <section class="page-section" id="services">
         <div class="container">

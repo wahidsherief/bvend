@@ -45,6 +45,8 @@ class ResetLockers implements ShouldQueue
             ['id', '=', $this->locker_id],
             ['machine_id', '=', $this->machine_id],
         ])->update(['status' => 'off']);
+
+        echo 'hello done';
     }
 }
 ///usr/local/bin/php/home2/courage/www.bvend.xyz/artisan queue:listen database --daemon

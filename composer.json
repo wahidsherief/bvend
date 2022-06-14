@@ -16,6 +16,7 @@
         "laravel/passport": "^9.3",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.1",
+        "salmanzafar/laravel-mqtt": "^2.0",
         "simplesoftwareio/simple-qrcode": "^2.0"
     },
     "require-dev": {

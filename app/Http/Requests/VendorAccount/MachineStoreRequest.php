@@ -27,7 +27,6 @@ class MachineStoreRequest extends FormRequest
             'vendor_id' => 'required',
             'category_id' => 'required',
             'type' => 'required',
-            'model' => 'required',
             'address' => 'required',
         ];
     }

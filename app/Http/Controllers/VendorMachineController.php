@@ -15,71 +15,74 @@ class VendorMachineController extends Controller
     protected $machine_service;
     protected $refill_service;
 
-    public function __construct(VendorRepository $vendor, MachineService $machine_service, RefillService $refill_service)
-    {
+    public function __construct(
+        VendorRepository $vendor,
+        MachineService $machine_service,
+        RefillService $refill_service
+    ) {
         $this->middleware('auth:vendor');
         $this->vendor = $vendor;
         $this->machine_service = $machine_service;
         $this->refill_service = $refill_service;
     }
 
-    public function getLockerMachine()
+    public function getMachine()
     {
-        $machines_with_models = $this->machine_service->getAllLockerMachinesOfThisVendor(Auth::id());
+        $machines = $this->machine_service->getAllMachinesOfVendor(Auth::id());
 
-        return view('vendor.locker_machine', compact('machines_with_models'));
+        return view('vendor.machine', compact('machines'));
     }
 
-    public function showLockerMachine($model, $machine_id)
+    public function showMachine($machine_id)
     {
         $vendor_id = Auth::id();
 
-        $machine = $this->machine_service->getThisLockerMachineOfThisVendor($vendor_id, $model, $machine_id);
+        $machine = $this->machine_service->getSpecificMachineOfVendor($vendor_id, $machine_id);
 
         $vendor = $this->vendor->find($vendor_id);
 
-        return view('vendor.locker_machine_show')->with(['vendor' => $vendor, 'machine' => $machine]);
+        return view('vendor.machine_show')->with(['vendor' => $vendor, 'machine' => $machine]);
     }
 
-    public function getLocker($model, $machine_id)
+    public function getLocks($machine_id)
     {
         $vendor_id = Auth::id();
 
-        $lockers = $this->refill_service->allRefillLockers($model, $machine_id);
+        $locks = $this->refill_service->allRefillLocks($machine_id);
 
-        $count = $this->refill_service->countRefilledLocker($lockers);
+        $count = $this->refill_service->countRefilledLocks($locks);
 
         $empty = isset($count[0]) ? $count[0] : 0;
 
-        return view('vendor.lockers', compact('model', 'lockers', 'empty'));
+        return view('vendor.locks_details', compact('locks', 'empty'));
     }
 
-    public function showLocker($model, $machine_id, $locker_id)
+    public function showLocks($machine_id, $id)
     {
         $vendor_id = Auth::id();
 
-        $machine = $this->machine_service->getThisLockerMachineOfThisVendor($vendor_id, $model, $machine_id);
+        $machine = $this->machine_service->getSpecificMachineOfVendor($vendor_id, $machine_id);
 
-        if ($locker_id > $machine->locker_end || $locker_id < $machine->locker_start) {
-            return redirect()->back();
-        }
+        // if ($id > $machine->end || $id < $machine->start) {
+        //     return redirect()->back();
+        // }
 
-        $locker = $this->refill_service->getRefillLocker($vendor_id, $model, $machine_id, $locker_id);
-        $calc = $locker->locker->id % $model;
-        $box_number = $calc != 0 ? $calc : $model;
-        $products = $this->machine_service->getMachineProduct($vendor_id, $model);
+        $lock = $this->refill_service->getRefillLocks($vendor_id, $machine_id, $id);
+        // $calc = $locker->locker->id % $model;
+        // $box_number = $calc != 0 ? $calc : $model;
+        $products = $this->machine_service->getMachineProductsOfVendor($vendor_id);
 
-        return view('vendor.locker_refill', compact('model', 'locker', 'products', 'box_number'));
+        return view('vendor.refill', compact('lock', 'products'));
     }
 
-    public function openLocker($model, $machine_id, $locker_id)
+    public function openLocker($model, $machine_id, $id)
     {
-        return $this->refill_service->updateLocker($model, $machine_id, $locker_id, 'on');
+        return $this->refill_service->updateLocker($model, $machine_id, $id, 'on');
     }
 
-    public function closeLocker($model, $machine_id, $locker_id)
+    public function closeLocker($model, $machine_id, $id)
     {
-        return $this->refill_service->updateLocker($model, $machine_id, $locker_id, 'off');
+        return $this->refill_service->updateLocker($model, $machine_id, $id, 'off');
     }
 
     public function refillLocker(RefillLockerRequest $request)
@@ -101,18 +104,18 @@ class VendorMachineController extends Controller
 
         $paginate = 15;
 
-        $transactions = $transaction_service->getAllLockerMachineTransactionsOfThisVendor($vendor_id, $paginate);
+        $transactions = $transaction_service->getAllTransactionsOfVendor($vendor_id, $paginate);
 
-        return view('transaction.locker_transactions', compact('transactions'));
+        return view('transaction.transactions', compact('transactions'));
     }
 
     public function showTransactionDetails($transaction_id, TransactionService $transaction_service)
     {
         $vendor_id = Auth::id();
 
-        $transaction = $transaction_service->getLockerTransactionOfThisVendor($vendor_id, $transaction_id);
+        $transaction = $transaction_service->getSpecificTransactionOfVendor($vendor_id, $transaction_id);
 
-        return view('transaction.locker_transaction_details', compact('transaction'));
+        return view('transaction.transaction_details', compact('transaction'));
     }
 
     private function processRefillInput($request)
@@ -121,7 +124,7 @@ class VendorMachineController extends Controller
             'machine_id' => $request->machine_id,
             'machine_type' => $request->machine_type,
             'machine_model' => $request->machine_model,
-            'locker_id' => $request->locker_id,
+            'id' => $request->id,
             'product_id' => $request->product_id,
             'quantity' => $request->quantity,
             'buy_unit_price' => $request->buy_unit_price,

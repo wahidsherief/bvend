@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\SubscribeFromMachine::class,
+        Commands\PublishToMachine::class
     ];
 
     /**
@@ -24,9 +25,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
-            Log::info('working...');
-        })->everyMinute();
+        // $schedule->call(function () {
+        //     Log::info('working...');
+        // })->everyMinute();
+        
+        // schedule command is disabled in live server
+        // which generates texts.
+        $schedule->command('subscribe:machine')->everyMinute();
+        $schedule->command('publish:machine')->everyMinute();
     }
 
     /**

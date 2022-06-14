@@ -130,7 +130,7 @@ class LoginController extends Controller
 
         if ($user && $otp) {
             Cache::put($user->mobile, $otp, $expiresAt);
-            $message = 'Bvend verification code : ' . $otp;
+            $message = 'Verification Code : ' . $otp . '%0aBvend Technologies Ltd.';
             $url = 'https://sms.greenweb.com.bd/api.php?token=3f659bc939d1b29d13cd93b318133a07&to=' . $user->mobile . '&message=' . $message;
             $response = Http::timeout(30)->get($url);
             return $response;

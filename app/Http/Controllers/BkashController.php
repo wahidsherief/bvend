@@ -394,7 +394,7 @@ class BkashController extends Controller
         }
     }
 
-    private function processPaymentInputForLocker($request)
+    private function  , ($request)
     {
         $attributes = [
             'machine_id' => $request->machine_id,
@@ -519,7 +519,7 @@ class BkashController extends Controller
     {
         session()->forget($session_token);
 
-        $url = config('global.api_url_bkash') . 'success/';
+        $url = config('global.api_url_bkash') . 'success/done';
 
         return redirect()->away($url);
     }

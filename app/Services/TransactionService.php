@@ -2,8 +2,7 @@
 
 namespace App\Services;
 
-use App\MLTransaction;
-use App\TransactionLocker;
+use App\Transaction;
 
 class TransactionService extends BaseService
 {
@@ -12,34 +11,26 @@ class TransactionService extends BaseService
     protected $transaction_locker;
 
     public function __construct(
-        MLTransaction $locker_machine_transaction,
-        TransactionLocker $transaction_locker,
+        Transaction $transaction,
         MachineService $machine_service
     ) {
-        $this->locker_machine_transaction = $locker_machine_transaction;
+        $this->transaction = $transaction;
         $this->machine_service = $machine_service;
-        $this->transaction_locker = $transaction_locker;
     }
 
-    public function getAllLockerMachineTransactionsOfThisVendor($vendor_id, $paginate)
+    public function getAllTransactionsOfVendor($vendor_id, $paginate)
     {
-        $transactions = $this->locker_machine_transaction->where(['vendor_id' => $vendor_id, 'status' => 'success'])->latest()->paginate($paginate);
-
-        foreach ($transactions as $transaction) {
-            $machine_table = $this->machine_service->getLockermachineTable($transaction->machine_model);
-            $result = \DB::table($machine_table)->where('id', $transaction->machine_id)->first('machine_code');
-            $transaction->machine_code = $result->machine_code;
-        }
+        $transactions = $this->transaction->where(['vendor_id' => $vendor_id, 'status' => 'success'])->latest()->paginate($paginate);
 
         return $transactions;
     }
 
-    public function getLockerTransactionOfThisVendor($vendor_id, $transaction_id)
+    public function getSpecificTransactionOfVendor($vendor_id, $transaction_id)
     {
-        $transaction = MLTransaction::with(['lockers.refill.product.category', 'lockers.refill.product.brand', 'vendor'])
+        $transaction = Transaction::with(['lockers.refill.product.category', 'lockers.refill.product.brand', 'vendor'])
         ->where(['vendor_id' => $vendor_id, 'id' => $transaction_id])->first();
 
-        $transaction->machine = $this->machine_service->getThisLockerMachineOfThisVendor($vendor_id, $transaction->machine_model, $transaction->machine_id);
+        // $transaction->machine = Machine::where($vendor_id, $transaction->machine_id);
 
         return $transaction;
     }

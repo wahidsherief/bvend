@@ -77,6 +77,17 @@
       0 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     ),
   ),
+  'salmanzafar/laravel-mqtt' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Salman\\Mqtt\\MqttServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Mqtt' => 'Salman\\Mqtt\\Facades\\Mqtt',
+    ),
+  ),
   'simplesoftwareio/simple-qrcode' => 
   array (
     'providers' => 

@@ -34,7 +34,7 @@
                             @foreach($products as $product)
                             <tr class='table-row'>
                                 <td>{{ ++$i }}</td>
-                                <td>{{ $product->name }}</td>
+                                <td>{{ $product->product_name }}</td>
                                 <td>{{$product->category->name}}</td>
                                 <td>{{ isset($product->brand->name) ? $product->brand->name : 'N/A' }}</td>
                                 <td><img src="{{asset('uploads/products/'.$product->image)}}" alt="" width="60"

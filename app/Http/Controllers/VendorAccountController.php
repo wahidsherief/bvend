@@ -8,6 +8,7 @@ use App\Http\Requests\VendorAccount\MachineStoreRequest;
 use App\Http\Requests\VendorAccount\MachineUpdateRequest;
 use App\Repositories\VendorRepository;
 use App\Repositories\ProductCategoryRepository;
+use App\Repositories\ProductRepository;
 use App\Services\BaseService;
 use App\Services\MachineService;
 use App\Services\TransactionService;
@@ -16,16 +17,28 @@ class VendorAccountController extends Controller
 {
     private $path = 'vendor'; // path to upload images
 
-    protected $vendor;
     protected $service;
     protected $machine_service;
+    protected $transaction_service;
+    protected $vendor;
+    protected $productcategory;
+    protected $product;
 
-    public function __construct(VendorRepository $vendor, BaseService $service, MachineService $machine_service)
-    {
+    public function __construct(
+        BaseService $service,
+        MachineService $machine_service,
+        TransactionService $transaction_service,
+        VendorRepository $vendor,
+        ProductCategoryRepository $productcategory,
+        ProductRepository $product
+    ) {
         $this->middleware('auth:admin');
-        $this->vendor = $vendor;
         $this->service = $service;
         $this->machine_service = $machine_service;
+        $this->transaction_service = $transaction_service;
+        $this->vendor = $vendor;
+        $this->productcategory = $productcategory;
+        $this->product = $product;
     }
 
     public function index()
@@ -67,11 +80,11 @@ class VendorAccountController extends Controller
         return redirect()->route('vendor_account_inactive')->with('warning', 'Vendor account submitted for Approval!');
     }
 
-    public function show($id, TransactionService $transaction_service)
+    public function show($id)
     {
         $vendor = $this->vendor->find($id);
 
-        $transactions = $transaction_service->getAllLockerMachineTransactionsOfThisVendor($vendor->id, 15);
+        $transactions = $this->transaction_service->getAllTransactionsOfVendor($vendor->id, 15);
 
         if (!$vendor) {
             return abort(404);
@@ -139,32 +152,32 @@ class VendorAccountController extends Controller
         }
     }
 
-    public function getLockerMachine($vendor_id)
+    public function getMachine($vendor_id)
     {
-        $machines_with_models = $this->machine_service->getAllLockerMachinesOfThisVendor($vendor_id);
+        $machines = $this->machine_service->getAllMachinesOfVendor($vendor_id);
 
-        return view('vendor_account.machine_locker', compact('vendor_id', 'machines_with_models'));
+        return view('vendor_account.machine', compact('vendor_id', 'machines'));
     }
 
-    public function showLockerMachine($vendor_id, $model, $machine_id)
+    public function showMachine($vendor_id, $machine_id)
     {
-        $machine = $this->machine_service->getThisLockerMachineOfThisVendor($vendor_id, $model, $machine_id);
+        $machine = $this->machine_service->getSpecificMachineOfVendor($vendor_id, $machine_id);
 
         $vendor = $this->vendor->find($vendor_id);
 
-        return view('vendor_account.machine_locker_show')->with(['vendor' => $vendor, 'machine' => $machine]);
+        return view('vendor_account.machine_show')->with(['vendor' => $vendor, 'machine' => $machine]);
     }
 
-    public function createLockerMachine($vendor_id, ProductCategoryRepository $productcategory)
+    public function createMachine($vendor_id)
     {
-        $categories = $productcategory->all();
+        $categories = $this->productcategory->all();
 
         $vendor = $this->vendor->find($vendor_id);
 
-        return view('vendor_account.machine_locker_create')->with(['vendor' => $vendor, 'categories' => $categories]);
+        return view('vendor_account.machine_create')->with(['vendor' => $vendor, 'categories' => $categories]);
     }
 
-    public function storeLockerMachine(MachineStoreRequest $request)
+    public function saveMachine(MachineStoreRequest $request)
     {
         $stored = $this->machine_service->store($request);
 
@@ -175,18 +188,18 @@ class VendorAccountController extends Controller
         return redirect()->back()->with('success', 'A machine with ' . $request->model . ' Lockers created successfully');
     }
 
-    public function editLockerMachine($vendor_id, $model, $machine_id, ProductCategoryRepository $productcategory)
+    public function editMachine($vendor_id, $machine_id)
     {
         $vendor = $this->vendor->find($vendor_id);
 
-        $categories = $productcategory->all();
+        $categories = $this->productcategory->all();
 
-        $machine = $this->machine_service->getThisLockerMachineOfThisVendor($vendor_id, $model, $machine_id);
+        $machine = $this->machine_service->getSpecificMachineOfVendor($vendor_id, $machine_id);
 
-        return view('vendor_account.machine_locker_edit')->with(['vendor' => $vendor, 'categories' => $categories, 'machine' => $machine]);
+        return view('vendor_account.machine_edit')->with(['vendor' => $vendor, 'categories' => $categories, 'machine' => $machine]);
     }
 
-    public function updateLockerMachine(MachineUpdateRequest $request)
+    public function updateMachine(MachineUpdateRequest $request)
     {
         $machine_service = new MachineService;
 
@@ -200,16 +213,14 @@ class VendorAccountController extends Controller
     }
 
     // locker machine activate / deactivate method
-    public function toggleLockerMachine($vendor_id, $model, $machine_id)
+    public function toggleMachineActivation($vendor_id, $machine_id)
     {
-        $machine_service = new MachineService;
-
-        $machine = $machine_service->getThisLockerMachineOfThisVendor($vendor_id, $model, $machine_id);
+        $machine = $this->machine_service->getSpecificMachineOfVendor($vendor_id, $machine_id);
 
         if ($machine->active == 1) {
             $attributes['active'] = 0;
 
-            $updated = $machine_service->toggleMachine($model, $machine_id, $attributes);
+            $updated = $machine_service->toggleMachineActivation($machine_id, $attributes);
 
             if (!$updated) {
                 return redirect()->back()->with('failure', 'Machine dectivation failed!');
@@ -219,7 +230,7 @@ class VendorAccountController extends Controller
         } else {
             $attributes['active'] = 1;
 
-            $updated = $machine_service->toggleMachine($model, $machine_id, $attributes);
+            $updated = $machine_service->toggleMachineActivation($machine_id, $attributes);
 
             if (!$updated) {
                 return redirect()->back()->with('failure', 'Machine activation failed!');

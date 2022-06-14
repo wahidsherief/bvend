@@ -15,7 +15,7 @@ class CreateMachineTypesTable extends Migration
     {
         Schema::create('machine_types', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->enum('type', ['ML', 'MS']);
+            $table->enum('type', ['store', 'box']);
             $table->timestamps();
         });
     }

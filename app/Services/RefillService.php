@@ -23,30 +23,26 @@ class RefillService extends BaseService
         return $this->refill->where($conditions)->first();
     }
 
-    public function allRefillLockers($model, $machine_id)
+    public function allRefillLocks($machine_id)
     {
-        $lockerTable = $this->machine_service->getLockersTable($model);
-        $lockers = DB::table($lockerTable)->where(['machine_id' => $machine_id])->get();
+        $locks = DB::table('locks')->where(['machine_id' => $machine_id])->get();
 
-        return $lockers;
+        return $locks;
     }
 
-    public function getRefillLocker($vendor_id, $model, $machine_id, $locker_id)
+    public function getRefillLocks($vendor_id, $machine_id, $lock_id)
     {
-        $lockerTable = $this->machine_service->getLockersTable($model);
-        $this_locker = collect();
-
-        $locker = DB::table($lockerTable)->where(['id' => $locker_id,
+        $locks = DB::table('locks')->where(['lock_id' => $lock_id,
             'machine_id' => $machine_id])->first();
 
-        $refill = $this->refill->where('id', $locker->refill_id)->first();
+        $refill = $this->refill->where('id', $locks->refill_id)->first();
         $product = isset($refill->product_id) ? Product::with(['category', 'brand'])->where('id', $refill->product_id)->first() : null;
 
-        $this_locker->locker = $locker;
-        $this_locker->refill = $refill;
-        $this_locker->product = $product;
+        $locks->lock= $locks;
+        $locks->refill = $refill;
+        $locks->product = $product;
 
-        return $this_locker;
+        return $locks;
     }
 
     public function refill(array $attributes)
@@ -57,12 +53,10 @@ class RefillService extends BaseService
             return false;
         }
 
-        $model = $attributes['machine_model'];
-        $locker_id = $attributes['locker_id'];
+        $lock_id = $attributes['lock_id'];
 
-        $lockerTable = $this->machine_service->getLockersTable($model);
 
-        DB::table($lockerTable)->where('id', $locker_id)->update(
+        DB::table('locks')->where('id', $lock_id)->update(
             [
                 'refill_id' => $refill->id,
                 'status' => 'off',
@@ -73,12 +67,10 @@ class RefillService extends BaseService
         return true;
     }
 
-    public function updateLocker($model, $machine_id, $locker_id, $status)
+    public function updateLocker($machine_id, $lock_id, $status)
     {
-        $lockerTable = $this->machine_service->getLockersTable($model);
-
-        $updated = \DB::table($lockerTable)->where([
-            ['id', '=', $locker_id],
+        $updated = \DB::table('locks')->where([
+            ['id', '=', $lock_id],
             ['machine_id', '=', $machine_id],
         ])->update(['status' => $status]);
 
@@ -86,15 +78,15 @@ class RefillService extends BaseService
             return response()->json(false);
         }
 
-        $reset = (new ResetLockers($model, $machine_id, $locker_id))->delay(now()->addMinutes(2));
+        $reset = (new ResetLockers($machine_id, $lock_id))->delay(now()->addMinutes(2));
         dispatch($reset);
 
         return response()->json(true);
     }
 
-    public function countRefilledLocker($lockers)
+    public function countRefilledLocks($locks)
     {
-        $count = $lockers->countBy(function ($item) {
+        $count = $locks->countBy(function ($item) {
             return $item->refilled;
         });
 

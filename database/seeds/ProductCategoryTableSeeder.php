@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Category;
+use App\ProductCategory;
 
 class ProductCategoryTableSeeder extends Seeder
 {
@@ -12,6 +12,12 @@ class ProductCategoryTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Category::class,10)->create();
+        // factory(App\ProductCategory::class, 10)->create();
+
+        foreach (range(0, 10) as $index) {
+            $category = new ProductCategory();
+            $category->name = "category:" . $index;
+            $category->save();
+        }
     }
 }

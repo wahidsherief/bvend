@@ -11,7 +11,7 @@ class MachineTypeTableSeeder extends Seeder
      */
     public function run()
     {
-        $types = ['ML', 'MS'];
+        $types = ['store', 'box'];
         foreach ($types as $type) {
             DB::table('machine_types')->insert(['type' => $type]);
         }

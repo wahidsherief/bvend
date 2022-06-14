@@ -15,7 +15,7 @@
                         {{method_field('PUT')}}
                         <div class="form-group">
                             <label for="">Product Name</label>
-                            <input type="text" value="{{$product->name}}" class="form-control" name="name">
+                            <input type="text" value="{{$product->product_name}}" class="form-control" name="name">
                         </div>
                         <div class="form-group">
                             <label>Select Category</label>

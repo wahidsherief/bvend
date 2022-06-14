@@ -1,0 +1,12 @@
+Message
+{"dateTime":"20180419122246","debitMSISDN":"8801700000001","creditOrganizationName":"Org 01","creditShortCode":"ORG001","trxID":"4J420ANOXC","transactionStatus":"Completed","transactionType":"1003","amount":"100","currency":"BDT","transactionReference":"User inputed reference value."}
+MessageId
+"20d48143-6af4-571d-b7cb-d211e6a2ac69"
+Timestamp
+"2018-04-19T12:22:46.236Z"
+TopicArn
+"arn:aws:sns:ap-southeast-1:354285753755:bpt_01823072645"
+Type
+"Notification"
+
+

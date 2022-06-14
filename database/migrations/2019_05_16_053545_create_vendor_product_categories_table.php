@@ -17,8 +17,6 @@ class CreateVendorProductCategoriesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('vendor_id');
             $table->integer('machine_id');
-            $table->enum('machine_type', ['ML', 'MS']);
-            $table->enum('machine_model', ['8', '16', '32', '64', '96', '128', '256']);
             $table->integer('product_category_id');
         });
     }

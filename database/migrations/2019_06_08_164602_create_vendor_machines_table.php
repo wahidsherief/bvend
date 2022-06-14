@@ -17,8 +17,7 @@ class CreateVendorMachinesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('machine_id');
             $table->integer('vendor_id');
-            $table->enum('machine_type', ['ML', 'MS']);
-            $table->enum('machine_model', ['8', '16', '32', '64', '96', '128', '256']);
+            $table->enum('machine_type', ['store', 'box']);
             $table->boolean('active')->default(0);
             $table->timestamps();
         });

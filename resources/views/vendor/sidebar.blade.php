@@ -32,13 +32,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('vendor_locker_machine')}}">
+                <a class="nav-link" href="{{route('vendor_machines')}}">
                     <!-- <i class="fas fa-industry"></i> -->
                     <span>Refill</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('vendor_locker_machine_transactions')}}">
+                <a class="nav-link" href="{{route('vendor_machine_transactions')}}">
                     <!-- <i class="fas fa-industry"></i> -->
                     <span>Transactions</span>
                 </a>

@@ -48,13 +48,8 @@ class VendorRepository
         return $this->vendor->find($id)->delete();
     }
 
-    public function mltransaction($item)
+    public function transaction($item)
     {
-        return $this->vendor->mltransaction()->paginate($item);
-    }
-
-    public function mstransaction($item)
-    {
-        return $this->vendor->mstransaction()->paginate($item);
+        return $this->vendor->transaction()->paginate($item);
     }
 }

@@ -44,41 +44,6 @@ export default class OpenLocker extends Component {
             });
     }
 
-    // closeBox(data, host) {
-    //     const { model, machine_id, locker_id } = data;
-    //     const api_url = `${host}/vendor/locker/close/${model}/${machine_id}/${locker_id}`;
-
-    //     axios
-    //         .get(api_url)
-    //         .then((response) => {
-    //             if (!response.data) {
-    //                 alert('Box close failed!');
-    //             } else {
-    //                 this.setState({
-    //                     disable: false,
-    //                 });
-
-    //                 this.hideLoading();
-
-    //                 alert('Box opened successfully');
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             alert(error);
-    //         });
-    // }
-
-    // showLoading() {
-    //     document.getElementsByClassName('full-page-loader')[0].classList.remove('d-none');
-    // }
-
-    // hideLoading() {
-    //     document.getElementsByClassName('full-page-loader')[0].classList.add('d-none');
-    // }
-
-    // showMessage() {
-    //     document.getElementsByClassName('full-page-loader')[0].classList.add('d-none');
-    // }
 
     render() {
         return (
@@ -86,7 +51,7 @@ export default class OpenLocker extends Component {
                 <button
                     id="open-box"
                     type="button"
-                    className="btn btn-secondary btn-block text-white"
+                    className="btn btn-bvend btn-block text-white"
                     onClick={this.openBox.bind(this)}
                 >
                     Open Box
