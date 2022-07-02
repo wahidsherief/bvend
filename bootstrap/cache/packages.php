@@ -7,7 +7,7 @@
     ),
     'aliases' => 
     array (
-      'Debugbar' => 'Barryvdh\\Debugbar\\Facade',
+      'Debugbar' => 'Barryvdh\\Debugbar\\Facades\\Debugbar',
     ),
   ),
   'beyondcode/laravel-dump-server' => 
@@ -17,24 +17,6 @@
       0 => 'BeyondCode\\DumpServer\\DumpServerServiceProvider',
     ),
   ),
-  'facade/ignition' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Facade\\Ignition\\IgnitionServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'Flare' => 'Facade\\Ignition\\Facades\\Flare',
-    ),
-  ),
-  'fideloper/proxy' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Fideloper\\Proxy\\TrustedProxyServiceProvider',
-    ),
-  ),
   'fruitcake/laravel-cors' => 
   array (
     'providers' => 
@@ -42,11 +24,18 @@
       0 => 'Fruitcake\\Cors\\CorsServiceProvider',
     ),
   ),
-  'laravel/passport' => 
+  'laravel/sail' => 
   array (
     'providers' => 
     array (
-      0 => 'Laravel\\Passport\\PassportServiceProvider',
+      0 => 'Laravel\\Sail\\SailServiceProvider',
+    ),
+  ),
+  'laravel/sanctum' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Sanctum\\SanctumServiceProvider',
     ),
   ),
   'laravel/tinker' => 
@@ -88,15 +77,15 @@
       'Mqtt' => 'Salman\\Mqtt\\Facades\\Mqtt',
     ),
   ),
-  'simplesoftwareio/simple-qrcode' => 
+  'spatie/laravel-ignition' => 
   array (
     'providers' => 
     array (
-      0 => 'SimpleSoftwareIO\\QrCode\\QrCodeServiceProvider',
+      0 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
     ),
     'aliases' => 
     array (
-      'QrCode' => 'SimpleSoftwareIO\\QrCode\\Facades\\QrCode',
+      'Flare' => 'Spatie\\LaravelIgnition\\Facades\\Flare',
     ),
   ),
 );

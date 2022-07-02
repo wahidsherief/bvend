@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
@@ -11,13 +12,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(ProductTableSeeder::class);
+        $this->call(ProductSeeder::class);
         // $this->call(VendorTableSeeder::class);
         // $this->call(VendorRequestSeeder::class);
-        $this->call(ProductCategoryTableSeeder::class);
-        $this->call(ProductBrandTableSeeder::class);
-        $this->call(RefillTableSeeder::class);
+        $this->call(ProductCategorySeeder::class);
+        $this->call(ProductBrandSeeder::class);
+        $this->call(RefillSeeder::class);
         // $this->call(VendorProductCategoryTableSeeder::class);
-        $this->call(TransactionTableSeeder::class);
+        $this->call(TransactionSeeder::class);
     }
 }

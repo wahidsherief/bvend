@@ -1,9 +1,11 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use App\ProductBrand;
 
-class ProductBrandTableSeeder extends Seeder
+class ProductBrandSeeder extends Seeder
 {
     /**
      * Run the database seeds.

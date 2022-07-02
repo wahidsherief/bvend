@@ -1,8 +1,10 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 
-class TransactionTableSeeder extends Seeder
+class TransactionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +16,7 @@ class TransactionTableSeeder extends Seeder
         // factory(App\MLTransaction::class,10)->create();
         $faker = \Faker\Factory::create();
         for ($i=1;$i<=20;$i++) {
-            DB::table('transactions')->insert([
+            \DB::table('transactions')->insert([
                 'id' => $i,
                 // 'machine_code' => 'ML0080213160312',
                 'machine_id' => rand(1, 3),

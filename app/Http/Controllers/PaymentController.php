@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use App\Transaction;
 
 class PaymentController extends Controller
 {
@@ -43,6 +45,16 @@ class PaymentController extends Controller
                     curl_exec($url);
                 } elseif ($messageType=="Notification") {
                     $notificationData = $payload['Message'];
+                    $transaction = new Transaction();
+                    $transaction->machine_id = 1;
+                    $transaction->refill_id = 1;
+                    $transaction->vendor_id = 1;
+                    $transaction->user_id = 1;
+                    $transaction->invoice_no = 1;
+                    $transaction->discount = 1;
+                    $transaction->total_amount = $notificationData['amount'];
+                    $transaction->bkash_trx_id= $notificationData['trxID'];
+                    $transaction->save();
                     $this->writeLog('NotificationData-Message', $notificationData);
                 }
                 // }
@@ -53,7 +65,7 @@ class PaymentController extends Controller
     
     private function writeLog($logName, $logData)
     {
-        file_put_contents(storage_path('./bkash_logs/log-'.$logName.date("j.n.Y").'.log'), $logData, FILE_APPEND);
+        file_put_contents(storage_path('./bkash_logs/log-'.$logName.date("j.n.Y").'.json'), $logData, FILE_APPEND);
     }
 
     private function get_content($URL)

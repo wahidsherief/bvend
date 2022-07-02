@@ -1,8 +1,10 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 
-class RefillTableSeeder extends Seeder
+class RefillSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,7 +14,7 @@ class RefillTableSeeder extends Seeder
     public function run()
     {
         foreach (range(2, 6) as $value) {
-            DB::table('refills')->insert([
+            \DB::table('refills')->insert([
                 'machine_id' => $value,
                 'machine_type' => 'store',
                 'channel_id' => rand(1, 10),

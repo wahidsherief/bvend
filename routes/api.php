@@ -13,8 +13,6 @@
 
 Route::post('/bkash', 'PaymentController@bkashWebhook')->name('bkash');
 
-Route::post('/bc', 'PaymentController@check');
-
 // Route::post('login', 'API\UserController@login');
 // Route::post('register', 'API\UserController@register');
 // Route::group(['middleware' => 'auth:api'], function () {

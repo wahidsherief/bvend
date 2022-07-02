@@ -1,0 +1,33 @@
+Message
+"{\"dateTime\":\"20220627211930\",\"debitMSISDN\":\"01913663370\",\"creditOrganizationName\":\"B VEND TECHNOLOGIES LTD-RM37197\",\"creditShortCode\":\"01301794373\",\"trxID\":\"9FR57PPJ0T\",\"transactionStatus\":\"Completed\",\"transactionType\":\"10002294\",\"amount\":\"1.0\",\"currency\":\"BDT\"}"
+MessageId
+"3d24826d-68d3-5780-9721-d95ea411bcf4"
+Timestamp
+"2022-06-27T15:19:30.903Z"
+TopicArn
+"arn:aws:sns:ap-southeast-1:797962984373:bpt_01301794373"
+Type
+"Notification"
+
+Message
+"{\"dateTime\":\"20220627212342\",\"debitMSISDN\":\"01812883111\",\"creditOrganizationName\":\"B VEND TECHNOLOGIES LTD-RM37197\",\"creditShortCode\":\"01301794373\",\"trxID\":\"9FR47PVGLY\",\"transactionStatus\":\"Completed\",\"transactionType\":\"10002294\",\"amount\":\"1.0\",\"currency\":\"BDT\"}"
+MessageId
+"c744ad53-2626-5908-bf6f-f660eb98bd60"
+Timestamp
+"2022-06-27T15:23:42.741Z"
+TopicArn
+"arn:aws:sns:ap-southeast-1:797962984373:bpt_01301794373"
+Type
+"Notification"
+
+Message
+"{\"dateTime\":\"20220627212559\",\"debitMSISDN\":\"01913663370\",\"creditOrganizationName\":\"B VEND TECHNOLOGIES LTD-RM37197\",\"creditShortCode\":\"01301794373\",\"trxID\":\"9FR37PZIP3\",\"transactionStatus\":\"Completed\",\"transactionType\":\"10002294\",\"amount\":\"2.0\",\"currency\":\"BDT\"}"
+MessageId
+"5cabc21d-f568-59d0-9cfc-992e3b2f410b"
+Timestamp
+"2022-06-27T15:25:59.262Z"
+TopicArn
+"arn:aws:sns:ap-southeast-1:797962984373:bpt_01301794373"
+Type
+"Notification"
+

@@ -1,9 +1,11 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use App\VendorRegistration;
 
-class VendorRequestTableSeeder extends Seeder
+class VendorRequestSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +14,6 @@ class VendorRequestTableSeeder extends Seeder
      */
     public function run()
     {
-       factory(App\VendorRegistration::class,10)->create();
+        factory(App\VendorRegistration::class, 10)->create();
     }
 }

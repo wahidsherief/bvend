@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 
 class VendorRequestSeeder extends Seeder
@@ -13,9 +15,9 @@ class VendorRequestSeeder extends Seeder
     {
         // adding seed for the vendor request
 
-            $faker = \Faker\Factory::create();
-            for($i=0;$i<=100;$i++){
-                DB::table('registration_requests')->insert([
+        $faker = \Faker\Factory::create();
+        for ($i=0;$i<=100;$i++) {
+            DB::table('registration_requests')->insert([
                     'name' => $faker->userName,
                     'email' => $faker->email,
                     'business_name' => Str::random(7),
@@ -25,14 +27,6 @@ class VendorRequestSeeder extends Seeder
                     'created_at' => \Carbon\Carbon::now(),
                     'updated_at' =>\Carbon\Carbon::now()
                  ]);
-
-            }
-
-
-        
-
-
-
-
+        }
     }
 }
